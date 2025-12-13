@@ -1,12 +1,9 @@
 -- AutoTrain_96274223071227.lua
--- Modul Auto Train berdiri sendiri, dipanggil dari Loader
-
 local Players    = game:GetService("Players")
 local RS         = game:GetService("ReplicatedStorage")
 local Workspace  = game:GetService("Workspace")
 local LocalPlayer= Players.LocalPlayer
 
--- Gunakan referensi buffer global (JANGAN dipanggil, tidak pakai "()")
 local bufferLib = buffer
 
 local AutoTrain = {
@@ -14,7 +11,6 @@ local AutoTrain = {
     Thread  = nil,
 }
 
--- Cari RemoteEvent di ReplicatedStorage dari path table
 local function findRemote(path)
     local current = RS
     for _, name in ipairs(path) do
@@ -24,7 +20,6 @@ local function findRemote(path)
     return current
 end
 
--- Ambil folder world Training
 local function getTrainingWorldFolder(worldName)
     local training = Workspace:FindFirstChild("Training")
     if not training then return nil end
@@ -42,7 +37,6 @@ function AutoTrain:Stop()
 end
 
 function AutoTrain:Start(initialWorld)
-    -- stop dulu jika ada thread lama
     self:Stop()
 
     self.Enabled = true
@@ -63,7 +57,6 @@ function AutoTrain:Start(initialWorld)
         end
 
         while AutoTrain.Enabled do
-            -- world bisa diganti dari script utama lewat _G.SelectedTrainWorld
             if type(_G.SelectedTrainWorld) == "string" then
                 selectedWorld = _G.SelectedTrainWorld
             end
@@ -75,7 +68,6 @@ function AutoTrain:Start(initialWorld)
                 goto continue
             end
 
-            -- Cari dummy "Train" dengan angka tertinggi
             local bestDummy, bestLevel = nil, -1
 
             for _, dummy in ipairs(worldFolder:GetChildren()) do
@@ -98,7 +90,6 @@ function AutoTrain:Start(initialWorld)
                 local name = bestDummy.Name
                 local len  = #name
 
-                -- Payload ke remote: 0, len, lalu nama dummy
                 local payload = string.char(0, len) .. name
 
                 local ok, err = pcall(function()
